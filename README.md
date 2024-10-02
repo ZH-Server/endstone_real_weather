@@ -1,15 +1,16 @@
-# Endstone Exaple Plugin
+# Endstone Real Weather Plugin
 
-Example plugin
+Make the weather of your server is real life's weather (China Only)
 
 ## Feature
 
-- [x] Example
+- [x] `/realweather sync CITY_NAME` Change game weather to the real life city's weather
 
 ## Install
 
-- Download `.whl` file frome [release](https://github.com/ZH-Server/endstone_NAME/releases) or [action](https://github.com/ZH-Server/endstone_NAME/actions/workflows/build.yml)
+- Download `.whl` file from [release](https://github.com/ZH-Server/endstone_real_weather/releases) or [action](https://github.com/ZH-Server/endstone_real_weather/actions/workflows/build.yml)
 - Put it into `plugins` folder
+- Download `assets/city.json` from this repository and put it into `plugins` folder
 - Restart the server, enjoy!
 
 ## Requirement

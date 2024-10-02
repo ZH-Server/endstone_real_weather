@@ -1,0 +1,5 @@
+# sync weather after hours, should be under 12
+update_period=4 
+
+# city's name, Chinese only
+city="北京"

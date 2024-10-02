@@ -3,20 +3,20 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "endstone-example"
+name = "endstone-real-weather"
 version = "0.1.0"
 dependencies = []
 authors = [
     { name = "Endstone Developers", email = "hello@endstone.dev" },
     { name = "Huang FTS427", email = "FTS427@outlook.com" },
 ]
-description = "Python example plugin for Endstone servers"
+description = "Make the weather of your server is real life's weather"
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = ["endstone", "plugin"]
 
 [project.urls]
-Homepage = "https://github.com/ZH-Server/endstone_NAME/"
+Homepage = "https://github.com/ZH-Server/endstone_real_weather/"
 
 [project.entry-points."endstone"]
-example = "endstone_example:ExamplePlugin"
+real_weather = "endstone_real_weather:RealWeather"
