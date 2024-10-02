@@ -32,7 +32,7 @@ class RealWeather(Plugin):
     commands = {
         "realweather": {
             "description": "Real weather command",
-            "usages": ["/realweather (sync)<action: RWAction> [city: str]"],
+            "usages": ["/realweather (sync|info)<action: RWAction> [city: str]"],
             "permissions": ["real_weather.command.realweather"],
         },
     }
@@ -47,12 +47,20 @@ class RealWeather(Plugin):
     def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
         if command.name == "realweather":
             if str(args[0]) == "sync":
-                if len(str(args[1])) >= 0:
+                if len(str(args[1])) > 0:
                     self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(str(args[1]))}")
+                    sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
                     sender.send_message(f"Has synchronized {args[1]} weather")
                 else:
                     self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(str(self.city))}")
+                    sender.send_message(f"{str(self.city)}'s weather: {self.sync_weather(str(self.city))}")
                     sender.send_message("Has used default config to sync weather")
+            if str(args[0]) == "info":
+                if len(str(args[1])) > 0:
+                    sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
+                else:
+                    sender.send_message("You need to provide a city's name")
+        return True
 
     def sync_weather(self, city:str) -> str:
         f = open("plugins/real_weather/city.json", 'rb')
