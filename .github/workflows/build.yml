@@ -39,5 +39,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: Endstone_Example_Plugin
+          name: Endstone_RealWeather_Plugin
           path: dist/*
