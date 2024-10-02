@@ -57,9 +57,12 @@ class RealWeather(Plugin):
                     sender.send_message("Has used default config to sync weather")
             if str(args[0]) == "info":
                 if len(str(args[1])) > 0:
-                    sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
+                    if self.sync_weather(str(args[1])) != "None":
+                        sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
+                    else:
+                        sender.send_error_message("Wrong city's name!")
                 else:
-                    sender.send_message("You need to provide a city's name")
+                    sender.send_error_message("You need to provide a city's name")
         return True
 
     def sync_weather(self, city:str) -> str:
