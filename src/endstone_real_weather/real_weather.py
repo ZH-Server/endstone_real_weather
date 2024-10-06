@@ -25,7 +25,6 @@ class RealWeather(Plugin):
                 self.logger.info("Dependent file is ready!")
             else:
                 self.logger.error("Missing dependent file! Go to https://github.com/ZH-Server/endstone_real_weather/ read README.md first!")
-                #self.plugin_loader.disable_plugin()
         
         self.server.scheduler.run_task(self, self.update_weather, delay=0, period = self.update_time)
 
@@ -77,7 +76,7 @@ class RealWeather(Plugin):
             weather=str(d['data']['forecast'][0]['type'])
 
             if(d['status'] == 200):
-                self.logger.info(f"天气：{weather}")
+                CommandSender.send_message(f"天气：{weather}")
                 if weather in ["小雨", "大雨", "中雨", "雪", "大雪", "小雪", "中雪"]:
                     return "rain"
                 if weather in ["暴雨", "大暴雨", "中暴雨", "台风", "暴雪", "大暴雪", "中暴雪", "冰雹"]:
