@@ -8,9 +8,6 @@ class RealWeather(Plugin):
 
     def __init__(self):
         super().__init__()
-        self.update_period: float = 0
-        self.city: str = ""
-
         self.url: str = 'http://t.weather.sojson.com/api/weather/city/'
 
     def on_enable(self) -> None:
@@ -18,43 +15,39 @@ class RealWeather(Plugin):
         self.load_config()
 
         if not os.path.exists("plugins/real_weather/city.json"):
-            self.logger.error("Missing dependent file! Go to https://github.com/ZH-Server/endstone_real_weather/ read README.md at first!")
+            self.logger.error("Missing dependent file! Go to https://github.com/ZH-Server/endstone_real_weather read README.md at first!")
 
         self.server.scheduler.run_task(self, self.update_weather, delay=0, period = self.update_period * 72000)
 
     commands = {
-        "realweather": {
+        "rw": {
             "description": "Real weather command",
-            "usages": ["/realweather (sync|info)<action: RWAction> [city: str]"],
-            "permissions": ["realweather.command.realweather"],
+            "usages": ["/rw (sync|info)<action: RWAction> [city: str]"],
+            "permissions": ["rw.command.rw"],
         },
     }
 
     permissions = {
-        "realweather.command.realweather": {
-            "desciption": "Allow users to use the /realweather command",
+        "rw.command.rw": {
+            "desciption": "Allow users to use the /rw command",
             "default": "op",
         },
     }
 
     def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
-        if command.name == "realweather":
+        if command.name == "rw":
             
             if str(args[0]) == "sync":
-                if len(str(args[1])) > 0:
-                    if not self.sync_weather(str(args[1])) != "ERROR":
-                        sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
-                        self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(str(args[1]))}")
+                if len(args[1]) > 0:
+                    if not self.sync_weather(args[1]) != "ERROR":
+                        sender.send_message(f"{args[1]}'s weather: {self.sync_weather(args[1])}")
+                        self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(args[1])}")
                         sender.send_message(f"Has synchronized {args[1]} weather")
-                else:
-                    self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(str(self.city))}")
-                    sender.send_message(f"{str(self.city)}'s weather: {self.sync_weather(str(self.city))}")
-                    sender.send_message("Has used default config to sync weather")
             
             if str(args[0]) == "info":
-                if len(str(args[1])) > 0:
+                if len(args[1]) > 0:
                     if self.sync_weather(str(args[1])) != "ERROR":
-                        sender.send_message(f"{str(args[1])}'s weather: {self.sync_weather(str(args[1]))}")
+                        sender.send_message(f"{args[1]}'s weather: {self.sync_weather(args[1])}")
         return True
 
     def sync_weather(self, city:str) -> str:
@@ -75,20 +68,11 @@ class RealWeather(Plugin):
                     return "thunder"
                 else:
                     return "clear"
-            else:
-                return "ERROR"
         else:
             return "ERROR"
 
-    def change_weather(self, weather: str, time: int) -> None:
-        if weather != "ERROR":
-            self.server.dispatch_command(self.server.command_sender, "gamerule doWeatherCycle false")
-            self.server.dispatch_command(self.server.command_sender, f"weather {weather} {time}")
-        else:
-            self.server.dispatch_command(self.server.command_sender, "gamerule doWeatherCycle true")
-
     def update_weather(self):
-        self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather( self.city ) {self.update_period}}")
+        self.server.dispatch_command(self.server.command_sender, f"weather {self.sync_weather(self.city)} {self.update_period}")
 
     def load_config(self) -> None:
         self.city = self.config["city"]
